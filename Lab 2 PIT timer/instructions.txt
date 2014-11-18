@@ -1,0 +1,1 @@
+Make diode blinking with given interval using PIT Timer.

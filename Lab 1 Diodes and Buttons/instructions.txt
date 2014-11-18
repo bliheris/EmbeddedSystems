@@ -1,0 +1,1 @@
+Left diode is controlled by buttons, right one is blinking.
