@@ -7,8 +7,8 @@ void waitWithButtonControl();
 int main()
 {
   configureButtons();
-  enableDiode1();
-  enableDiode2();
+  initializeDiode1();
+  initializeDiode2();
   
   while(1){
     turnOnDiode2();
