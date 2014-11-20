@@ -20,24 +20,16 @@ void deactivateDBGUinterrupts(){
 
 void resetAndTurnOffReceiver(){
   //2. Reset and turn off receiver (register AT91C_BASE_DBGU->DBGU_CR)
+  /* Documentation Chapter 30.5.1 DGBU_ControlRegister */
   SET(AT91C_BASE_DBGU->DBGU_CR, AT91C_US_RSTRX);
   SET(AT91C_BASE_DBGU->DBGU_CR, AT91C_US_RXDIS);
 }
 
 void resetAndTurnOffTransmitter(){
   //3. Reset and turn off transmitter (register AT91C_BASE_DBGU->DBGU_CR)
+  /* Documentation Chapter 30.5.1 DGBU_ControlRegister */
   SET(AT91C_BASE_DBGU->DBGU_CR, AT91C_US_RSTTX);
   SET(AT91C_BASE_DBGU->DBGU_CR, AT91C_US_TXDIS);
-}
-
-void turnOnReceiver(){
-  // 8. Turn on receiver (register AT91C_BASE_DBGU->DBGU_CR),
-  SET(AT91C_BASE_DBGU->DBGU_CR, AT91C_US_RXEN);
-}
-
-void turnOnTransmitter(){
-  // 9. Turn on transmitter if required (register AT91C_BASE_DBGU->DBGU_CR),
-  SET(AT91C_BASE_DBGU->DBGU_CR, AT91C_US_TXEN);
 }
 
 void configureReceiverAndTransmitterAsInputPeripheralsPorts(){
@@ -52,13 +44,27 @@ void configureReceiverAndTransmitterAsInputPeripheralsPorts(){
 
 void configureBaudrate(){
   //5. Configure throughput (e.g. 115200 kbps, register AT91C_BASE_DBGU->DBGU_BRGR)
+  /* Documentation Chapter 30.5.9 DGBU_BaudRateGeneratorRegister */
   AT91C_BASE_DBGU->DBGU_BRGR = (int)(MASTERCLOCK/(16*BAUDRATE));
 }
 
 void configureOperationMode8N1(){
   //6. Configure operation mode (e.g. 8N1, register AT91C_BASE_DBGU->DBGU_MR, flags
+  /* Documentation Chapter 30.5.2 DGBU_ModeRegister */
   SET(AT91C_BASE_DBGU->DBGU_MR, AT91C_US_CHMODE_NORMAL);
   SET(AT91C_BASE_DBGU->DBGU_MR, AT91C_US_PAR_NONE);
+}
+
+void turnOnReceiver(){
+  // 8. Turn on receiver (register AT91C_BASE_DBGU->DBGU_CR),
+  /* Documentation Chapter 30.5.1 DGBU_ControlRegister */
+  SET(AT91C_BASE_DBGU->DBGU_CR, AT91C_US_RXEN);
+}
+
+void turnOnTransmitter(){
+  // 9. Turn on transmitter if required (register AT91C_BASE_DBGU->DBGU_CR),
+  /* Documentation Chapter 30.5.1 DGBU_ControlRegister */
+  SET(AT91C_BASE_DBGU->DBGU_CR, AT91C_US_TXEN);
 }
 
 void configureDBGU(){

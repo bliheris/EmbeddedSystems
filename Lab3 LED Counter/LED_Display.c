@@ -20,9 +20,9 @@ int digits[10][7] = {
   /* 9 */ {ON, ON, ON, ON, OFF, ON, ON}
 };
 
-int devices[10] = {
-  BRIGHTNESS_CONTROL,LEFT,RIGHT,
-  SEGMENT_A,SEGMENT_B,SEGMENT_C,SEGMENT_D,
+int devices[9] = {
+  LEFT,RIGHT,SEGMENT_A,
+  SEGMENT_B,SEGMENT_C,SEGMENT_D,
   SEGMENT_E,SEGMENT_F,SEGMENT_G
 };
 
@@ -69,7 +69,7 @@ void turnOffAllSegments(){
 
 void intializeLEDdisplay(){
   int i;
-  for(i = 0; i < 10; i++){
+  for(i = 0; i < 9; i++){
     SETBIT(AT91C_BASE_PIOB->PIO_PER, devices[i]);
     SETBIT(AT91C_BASE_PIOB->PIO_OER, devices[i]);
   }
