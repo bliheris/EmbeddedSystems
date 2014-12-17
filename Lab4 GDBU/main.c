@@ -1,7 +1,7 @@
 #include "GDBU_driver.h"
 #include "PIT_Timer.h"
 
-#define ALPHABET_MODE
+//#define ALPHABET_MODE
 #define CAPITALIZE_OFFSET -32
 
 void dbgu_print_ascii(const char *buffer){}

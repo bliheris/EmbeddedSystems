@@ -67,14 +67,32 @@ void turnOnTransmitter(){
   SET(AT91C_BASE_DBGU->DBGU_CR, AT91C_US_TXEN);
 }
 
-void configureDBGU(){
+void Open_DGBU_INT(unsigned int handler){
+  //2. Turn off interrupts (register AIC_IDCR)
+  //Documentation 29.8.11
+  AT91C_BASE_AIC->AIC_IDCR = 1 << AT91C_ID_SYS;
+  
+  //3. Configure pointer for  interrupt handler – use AIC_SVR table
+  AT91C_BASE_AIC->AIC_SVR[AT91C_ID_SYS] = handler;
+
+  //4. Configure method of interrupt triggering: high level, (AIC_SMR register, triggered by
+  //AT91C_AIC_SRCTYPE_EXT_HIGH_LEVEL and priority, e.g. AT91C_AIC_PRIOR_HIGHEST)
+  AT91C_BASE_AIC->AIC_SMR[AT91C_ID_SYS] = 
+    (AT91C_AIC_SRCTYPE_EXT_HIGH_LEVEL | AT91C_AIC_PRIOR_HIGHEST);
+
+  //5. Clear interrupt flag (register AIC_ICCR)
+  AT91C_BASE_AIC->AIC_ICCR = 1 << AT91C_ID_SYS;
+}
+
+void configureDBGU(unsigned int handler){
   deactivateDBGUinterrupts();
   resetAndTurnOffReceiver();
   resetAndTurnOffTransmitter();
   configureReceiverAndTransmitterAsInputPeripheralsPorts();
   configureBaudrate();
   configureOperationMode8N1();
-  //7. Configure interrupts if used, e.g. Open_DBGU_INT() !! here not used !!
+  //7. Configure interrupts if used, e.g. Open_DBGU_INT()
+  Open_DGBU_INT(handler);
   turnOnReceiver();
   turnOnTransmitter();
 }
@@ -98,3 +116,4 @@ char DBGU_readChar(){
   while (!(AT91C_BASE_DBGU->DBGU_CSR & AT91C_US_RXRDY)){};
   return  *((char*) AT91C_DBGU_RHR);
 }
+

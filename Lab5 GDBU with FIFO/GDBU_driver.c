@@ -80,6 +80,8 @@ void configureDBGU(){
 }
 
 void DBGU_sendChar(char data){
+  /* Documentation Chapter 30.5.6 DGBU_UnitStatusRegister */
+  /* Documentation Chapter 30.5.8 DGBU_TransmitHoldingRegister */
   while (!(AT91C_BASE_DBGU->DBGU_CSR & AT91C_US_TXRDY)) {};
   AT91C_BASE_DBGU->DBGU_THR = data;
 }
@@ -91,6 +93,8 @@ void DBGU_sendString(char* string){
 }
 
 char DBGU_readChar(){
+  /* Documentation Chapter 30.5.6 DGBU_UnitStatusRegister */
+  /* Documentation Chapter 30.5.7 DGBU_ReceiverHoldingRegister */
   while (!(AT91C_BASE_DBGU->DBGU_CSR & AT91C_US_RXRDY)){};
   return  *((char*) AT91C_DBGU_RHR);
 }
